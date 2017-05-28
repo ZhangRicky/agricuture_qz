@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+  <mapping path="/login" exclude="true" />
+  <!-- <mapping path="/user" exclude="true" /> -->
+  <mapping path="/services/*" exclude="true" />
+  <mapping path="/*" decorator="/layouts/default.jsp"/>
+  <content-processor>
+       <tag-rule-bundle class="com.chenghui.agriculture.core.sitemesh.ExtHtmlTagRuleBundle" />
+  </content-processor>
+</sitemesh>

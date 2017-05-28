@@ -1,0 +1,14 @@
+项目使用的插件存放于 resources/pluginComponents下：（以下控件可在网上直接搜到）
+    1、bootstrap
+    
+    2、bootstrap风格 时间控件dateTimePicker 
+        
+        http://www.bootcss.com/p/bootstrap-datetimepicker/index.htm
+        
+    3、bootstrap 样式的 jQuery 表格插件 jqueryDataTables
+    	
+    	http://www.datatables.net/
+    	
+    4、jquery zTree（自定义修改了其样式）
+    	
+    	http://www.ztree.me/v3/main.php#_zTreeInfo

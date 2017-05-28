@@ -1,0 +1,125 @@
+body{
+    margin: 0;
+    padding: 0;
+    width:100%;
+    height:790px !important;
+    background: url("../images/home/flower.png") bottom no-repeat;
+    background-size: contain;
+}
+.clear{
+    clear: both;
+}
+.header{
+    height: 50px;
+    background:#28AB00;
+    margin-top:-23px;
+}
+.header p{
+    font-size: 23px;
+    line-height: 46px;
+    margin-left: 25px;
+    color:white
+}
+.navi{
+    height: 30px;
+    border-top:3px solid #28A202;
+    border-bottom: 1px solid #f1f1f1;
+    margin-top:5px;
+
+}
+.navi p{
+    line-height: 25px;
+    margin-left: 30px;
+    font-size: 20px;
+}
+.list1{
+    width: 165px;
+    height: 155px;
+    float: left;
+    position: relative;
+    margin-top: 20px;
+    margin-left: 120px;
+    background: url("../images/home/default_bg.png");
+    cursor: pointer;
+}
+.con-list{
+    position: absolute;
+    top:38px;
+    left:45px;
+    z-index: 20;
+}
+.list1 p{
+    position: absolute;
+    top:156px;
+    left:43px;
+    color: black ;
+}
+.list1:hover{
+    background: url("../images/home/hover_bg.png");
+}
+.tu1{
+    width: 75px;
+    height: 75px;
+    background: url("../images/home/list1.png");
+}
+.tu1:hover{
+    background: url("../images/home/list01.png");
+}
+.tu2{
+    width: 75px;
+    height: 75px;
+    background: url("../images/home/list2.png");
+}
+.tu2:hover{
+    background: url("../images/home/list02.png");
+}
+.tu3{
+    width: 75px;
+    height: 75px;
+    background: url("../images/home/list7.png");
+}
+.tu3:hover{
+    background: url("../images/home/list07.png");
+}
+.tab{
+    border-top: 1px solid #f1f1f1;
+    margin-top: 50px;
+}
+.son1{
+    background: url("../images/home/list3.png");
+}
+.son1:hover{
+    background: url("../images/home/list03.png");
+}
+.son2{
+    background: url("../images/home/list4.png");
+}
+.son2:hover{
+    background: url("../images/home/list04.png");
+}
+.son3{
+    background: url("../images/home/list5.png");
+}
+.son3:hover{
+    background: url("../images/home/list05.png");
+}
+.son4{
+    background: url("../images/home/list6.png");
+}
+.son4:hover{
+    background: url("../images/home/list06.png");
+}
+.footer{
+    width: 100%;
+    height: 30px;
+    position: absolute;
+    bottom:0px;
+}
+.footer p{
+    font-size: 14px;
+    text-align: center;
+    color: black;
+    line-height: 30px;
+}
+
+

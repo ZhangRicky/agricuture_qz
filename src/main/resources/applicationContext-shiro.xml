@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	
+
+	<!-- 用户授权信息Cache, 采用EhCache -->
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache/ehcache-shiro.xml"/>
+	</bean>
+	
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- <property name="realm" ref="shiroDBRealm"></property> -->
+		<property name="realms">
+			<list>
+				<ref bean="shiroDBRealm"></ref>
+				<ref bean="bearerTokenRealm"></ref>
+			</list>
+		</property>
+		<property name="cacheManager" ref="shiroEhcacheManager" />  		
+	    <property name="rememberMeManager" ref="rememberMeManager"/>  
+	</bean>
+	<!-- Shiro Filter The id must be same as filter name in web.xml-->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/home" />
+		<property name="unauthorizedUrl" value="/login/unauthorized" />
+		<property name="filterChainDefinitions">
+			<value>
+				/ssoLogin = anon <!-- don't need any authentication-->
+				/ssoError = anon
+				/getUserSalt = anon
+				/authority = anon
+				<!-- /services/appLogin = bearerAuthc -->
+				/services/** = anon
+				/resources/** = anon
+				/uploadDir/** = anon
+				/login = authc
+				/logout = logout
+				/favicon.ico = anon
+				/** = user
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="shiroDBRealm" class="com.chenghui.agriculture.core.security.ShiroDBRealm">
+		<property name="authorizationCachingEnabled" value="true"/>
+		<property name="cacheManager" ref="shiroEhcacheManager"/>
+	</bean>
+	
+	<bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">  
+    	<property name="globalSessionTimeout" value="3600000"/>  
+	</bean>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+	<bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+		<property name="successUrl" value="/home" />
+		<property name="rememberMeParam" value="rememberMe"/> 
+	</bean>
+	<bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter"> 
+        <property name="redirectUrl" value="/login" />
+    </bean>
+
+	<!-- 会话Cookie模板 -->  
+	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+	    <constructor-arg value="sid"/>  
+	    <property name="httpOnly" value="true"/>  
+	    <property name="maxAge" value="-1"/>  
+	</bean>  
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+	    <constructor-arg value="rememberMe"/>  
+	    <property name="httpOnly" value="true"/>  
+	    <property name="maxAge" value="604800"/><!-- 7天 -->  
+	</bean>   
+
+	<!-- rememberMe管理器 -->  
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">  
+	     <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>  
+	     <property name="cookie" ref="rememberMeCookie"/>  
+	</bean>
+	
+	<bean id="bearerTokenRealm" class="com.chenghui.agriculture.core.security.http.BearerTokenRealm">
+		<property name="authorizationCachingEnabled" value="true"/>
+		<property name="cacheManager" ref="shiroEhcacheManager"/>
+	</bean>
+	
+	<bean id="bearerAuthc" class="com.chenghui.agriculture.core.security.http.BearerTokenAuthenticatingFilter">
+		<property name="successUrl" value="/home" />
+	</bean>
+
+</beans>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"  
+    xmlns:cxf="http://cxf.apache.org/core"  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/context 
+     http://www.springframework.org/schema/context/spring-context.xsd 
+     http://www.springframework.org/schema/tx 
+     http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/task 
+     http://www.springframework.org/schema/task/spring-task.xsd
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+     http://cxf.apache.org/jaxws   
+     http://cxf.apache.org/schemas/jaxws.xsd">
+     
+	<import resource="classpath:META-INF/cxf/cxf.xml" />  
+    <!--  <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />   -->
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" /> 
+	
+    <!-- 	webservice发布 -->
+	<!-- <jaxws:endpoint id="userWebService" implementor="com.chenghui.agriculture.webservice.impl.UserWebservice" address="/userWebService"/> -->
+	<!-- webservice 客户端连接 -->
+	<!-- <jaxws:client id="userWsClient" serviceClass="com.chenghui.agriculture.webservice.IUserWebservice" 
+        address="http://localhost:8080/service/userWebService"/>  -->
+	
+	<bean id="propertyConfigurer"
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- <import resource="applicationOracle.xml"/> -->
+	<import resource="applicationMysql.xml"/>
+	  
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 定时任务启用 -->
+	<task:annotation-driven />
+	
+	<!-- 扫描除了 Controller 的包 -->
+	<context:component-scan base-package="com.chenghui.agriculture">
+	    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>  
+	    <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+    <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+
+    <!--
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+            <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+            <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+    -->
+    <aop:aspectj-autoproxy />
+    <cache:annotation-driven/>
+    <!-- <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+    	<property name="caches">
+	        <set>
+	            <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+	                <property name="name" value="creditRules"/>
+	            </bean>
+	        </set>
+	    </property>
+    </bean> -->
+    <bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    	<property name="configLocation" value="classpath:ehcache/ehcache-agriculture.xml" />
+	</bean>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    	<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheName" value="access_tokens" />
+		<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+	
+</beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+-<wsdl:definitions name="helloWorld" targetNamespace="http://impls.ws.credit.chenghui.com/" xmlns:ns1="http://interfaces.ws.credit.chenghui.com/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://impls.ws.credit.chenghui.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<wsdl:import namespace="http://interfaces.ws.credit.chenghui.com/" location="http://localhost:8080/credit_reference_center/service/helloWorld?wsdl=HelloWorld.wsdl"> </wsdl:import>
+
+
+-<wsdl:binding type="ns1:HelloWorld" name="helloWorldSoapBinding">
+
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+
+
+-<wsdl:operation name="sayHello">
+
+<soap:operation style="document" soapAction=""/>
+
+
+-<wsdl:input name="sayHello">
+
+<soap:body use="literal"/>
+
+</wsdl:input>
+
+
+-<wsdl:output name="sayHelloResponse">
+
+<soap:body use="literal"/>
+
+</wsdl:output>
+
+</wsdl:operation>
+
+</wsdl:binding>
+
+
+-<wsdl:service name="helloWorld">
+
+
+-<wsdl:port name="HelloWorldImplPort" binding="tns:helloWorldSoapBinding">
+
+<soap:address location="http://localhost:8080/credit_reference_center/service/helloWorld"/>
+
+</wsdl:port>
+
+</wsdl:service>
+
+</wsdl:definitions>
